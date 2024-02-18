@@ -4,25 +4,22 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 从环境变量获取目标URLs，如果未设置，则使用默认URL
-const targetURLs = process.env.TARGET_URLS ? process.env.TARGET_URLS.split(',') : ['https://api.deeplx.org'];
-
-const maxRetries = 5;
+let targetURLs = process.env.TARGET_URLS ? process.env.TARGET_URLS.split(',') : ['https://api.deeplx.org'];
 
 app.use(express.json());
 app.use(express.text());
 
 app.all('*', async (req, res) => {
     let response;
-    let attempt = 0;
+    let urlsToTry = [...targetURLs]; // 创建URL列表的副本，用于尝试
 
-    while (attempt < maxRetries) {
-        // 随机选择一个目标URL
-        const randomIndex = Math.floor(Math.random() * targetURLs.length);
-        const targetURL = targetURLs[randomIndex];
+    while (urlsToTry.length > 0) {
+        const randomIndex = Math.floor(Math.random() * urlsToTry.length);
+        const targetURL = urlsToTry[randomIndex];
         const userURI = req.path;
         const proxyURL = targetURL + userURI;
 
-        // 伪装成浏览器的请求头
+        // 设置请求头，伪装成浏览器
         const headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.150 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
@@ -32,7 +29,7 @@ app.all('*', async (req, res) => {
             'Origin': targetURL,
         };
 
-        // 如果原始请求有正文，确保Content-Type匹配
+        // 从原始请求中复制Content-Type，如果有的话
         if (req.method !== 'GET' && req.headers['content-type']) {
             headers['Content-Type'] = req.headers['content-type'];
         }
@@ -45,23 +42,27 @@ app.all('*', async (req, res) => {
             });
 
             if (response.ok) {
-                break; // 成功响应，跳出循环
+                // 成功响应，跳出循环
+                break;
+            } else {
+                // 如果响应不是200 OK，移除当前URL并继续下一个
+                urlsToTry.splice(randomIndex, 1);
             }
         } catch (error) {
             console.error('Error during fetch:', error);
+            // 在网络错误等情况下移除当前URL并继续下一个
+            urlsToTry.splice(randomIndex, 1);
         }
-
-        attempt++;
     }
 
-    if (response) {
+    if (response && response.ok) {
         const responseBody = await response.text();
         res.set({
             'Access-Control-Allow-Origin': '*',
             'Content-Type': response.headers.get('Content-Type'),
         }).status(response.status).send(responseBody);
     } else {
-        res.status(500).send('无法获取有效响应');
+        res.status(500).send('所有目标URL都无法获取有效响应');
     }
 });
 
