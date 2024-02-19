@@ -3,7 +3,7 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-let targetURLs = process.env['TARGET_URLS'] ? process.env['TARGET_URLS'].split(',') : ['https://api.deeplx.org'];
+let targetURLs = process.env.TARGET_URLS ? process.env.TARGET_URLS.split(',') : ['https://api.deeplx.org'];
 
 app.use(express.json());
 app.use(express.text());
