@@ -23,12 +23,14 @@ app.all('*', async (req, res) => {
         }));
     } catch (error) {
         console.error('Error during fetch:', error);
+        return res.status(500).send('所有目标URL都无法获取有效响应');
     }
 
     if (response && response.status >= 200 && response.status < 300) {
+        // 设置一个固定的 Content-Type，例如 'application/octet-stream'
         res.set({
             'Access-Control-Allow-Origin': '*',
-            'Content-Type': response.headers['content-type'],
+            'Content-Type': 'application/octet-stream', // 或者根据你的需求选择其他类型
         }).status(response.status).send(response.data);
     } else {
         res.status(500).send('所有目标URL都无法获取有效响应');
