@@ -23,7 +23,8 @@
 
 1. 找到 "Environment Variables" 部分。
 
-2. 添加一个新环境变量，键名为 TARGET_URLS，值为https://github.com/xiaozhou26/serch_deeplx中的success_result.txt文件中url
+2. 添加一个新环境变量，键名为 TARGET_URLS，值为https://github.com/xiaozhou26/serch_deeplx
+中的success_result.txt文件中url
 
 ### 步骤 4：部署项目
 
