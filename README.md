@@ -23,9 +23,7 @@
 
 1. 找到 "Environment Variables" 部分。
 
-2. 添加一个新环境变量，键名为 `TARGET_URLS`，值为网络上公开deeplx。
-
-3. ```https://dx.ift.lat,https://deepl.tr1ck.cn,https://translate.dftianyi.com,https://deepl.dlwlrma.xyz,https://deepl.d0zingcat.xyz,https://e.nxnow.top,https://deeplx.he-sb.top,https://deepl.aimoyu.tech,https://deepl.coloo.org,https://api.deeplx.org,https://deeplx.keyrotate.com,https://deeplx.spaceq.xyz,https://deeplx.ychinfo.com,https://deeplx.papercar.top,https://deepx.dumpit.top,https://deepl.degbug.top,https://dx-api.nosec.link,https://deepl.mukapp.top,https://deeplx.imward.dev,https://ghhosa.zzaning.com,https://deeplx.6696699.xyz,https://deeplx.zeabur.app,https://deepl.zhaosaipo.com,https://deeplx.vercel.app```
+2. 添加一个新环境变量，键名为 TARGET_URLS，值为https://github.com/xiaozhou26/serch_deeplx中的success_result.txt文件中url
 
 ### 步骤 4：部署项目
 
