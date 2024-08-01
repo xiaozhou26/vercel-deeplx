@@ -3,7 +3,7 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const targetURLs = process.env.TARGET_URLS ? process.env.TARGET_URLS.split(',') : ['https://api.deeplx.org'];
+const targetURLs = process.env.TARGET_URLS ? process.env.TARGET_URLS.split(',') : ['https://deeplx.vercel.app'];
 
 app.use(express.json());
 app.use(express.text());
